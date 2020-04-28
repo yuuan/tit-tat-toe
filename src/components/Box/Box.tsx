@@ -16,12 +16,7 @@ const Box: React.FC<Props> = ({ position, owner, onClick }) => (
   </Container>
 );
 
-interface ContainerProps {
-  "data-position": Position;
-  onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-};
-
-const Container = styled.div<ContainerProps>`
+const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
