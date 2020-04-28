@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Position } from '../../interfaces';
 import { State } from '../../modules/reducer';
 import { actions as gameActions } from '../../modules/game';
-import { interfaces as ownerInterfaces } from '../../modules/owner';
+import { actions as ownerActions, interfaces as ownerInterfaces } from '../../modules/owner';
 import Game from '../../components/Game';
 
 const lines = [
@@ -40,7 +40,29 @@ const GameContainer = () => {
     }
   }, [owners, dispatch]);
 
-  return <Game winner={game.winner} />;
+  const handleClickBox = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const target = event.currentTarget;
+    const position = target.getAttribute('data-position') as Position;
+
+    if (game.winner === null && owners[position] === null) {
+      dispatch(ownerActions.setOwner(position, game.player));
+      dispatch(gameActions.switchPlayer());
+    }
+  };
+
+  const handleClickResetButton = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    dispatch(ownerActions.resetOwners());
+    dispatch(gameActions.resetGame());
+  };
+
+  return (
+    <Game
+      winner={game.winner}
+      owners={owners}
+      handleClickBox={handleClickBox}
+      handleClickResetButton={handleClickResetButton}
+    />
+  );
 }
 
 export default GameContainer;

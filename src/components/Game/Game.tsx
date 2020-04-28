@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Player } from '../../interfaces';
-import { interfaces } from '../../modules/game';
-import Board from '../../containers/Board';
-import ResetButton from '../../containers/ResetButton';
+import { interfaces as gameInterfaces } from '../../modules/game';
+import { interfaces as ownerInterfaces } from '../../modules/owner';
+import Board from '../Board';
+import Button from '../Button';
 
-const colors = (winner: interfaces.Winner) => {
+const colors = (winner: gameInterfaces.Winner) => {
   switch (winner) {
     case Player.Black:
       return '#CA3C6E';
@@ -17,20 +18,25 @@ const colors = (winner: interfaces.Winner) => {
 };
 
 interface Props {
-  winner: interfaces.Winner;
+  winner: gameInterfaces.Winner;
+  owners: ownerInterfaces.OwnersState;
+  handleClickBox: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  handleClickResetButton: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
-const Game: React.FC<Props> = ({ winner }) => (
+const Game: React.FC<Props> = ({ winner, owners, handleClickBox, handleClickResetButton }) => (
   <Background winner={winner}>
     <Container>
-      <Board />
-      <ResetButton wide={true} />
+      <Board owners={owners} onClick={handleClickBox} />
+      <Button wide={true} onClick={handleClickResetButton}>
+        リセット
+      </Button>
     </Container>
   </Background>
 );
 
 interface BackgroundProps {
-  winner: interfaces.Winner;
+  winner: gameInterfaces.Winner;
 };
 
 const Background = styled.div<BackgroundProps>`
